@@ -30,6 +30,9 @@ public class User {
     String birthPlace;
     String address;
 
+    @ManyToOne
+    Role roles;
+
     boolean active;
     Date onCreate;
     Date onUpdate;

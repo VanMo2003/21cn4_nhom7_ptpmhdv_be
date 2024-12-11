@@ -31,7 +31,8 @@ public class User {
     String address;
 
     @ManyToOne
-    Role roles;
+    @JoinColumn(name = "role_id", nullable = true)
+    Role role;
 
     boolean active;
     Date onCreate;

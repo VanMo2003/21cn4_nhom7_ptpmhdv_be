@@ -1,11 +1,10 @@
 package com.example.booking_app_be.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.ManyToMany;
+import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -20,6 +19,9 @@ public class Role {
     String name;
 
     String description;
+
+    @OneToMany(mappedBy = "role", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<User> users;
 
     @ManyToMany
     Set<Permission> permissions;

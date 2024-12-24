@@ -5,6 +5,7 @@ import com.example.booking_app_be.dto.request.AuthenticationRequest;
 import com.example.booking_app_be.dto.request.IntrospectRequest;
 import com.example.booking_app_be.dto.response.AuthenticationResponse;
 import com.example.booking_app_be.dto.response.IntrospectResponse;
+import com.example.booking_app_be.entity.Role;
 import com.example.booking_app_be.entity.User;
 import com.example.booking_app_be.exception.AppException;
 import com.example.booking_app_be.exception.ErrorCode;
@@ -72,7 +73,11 @@ public class AuthenticationService {
                 .findByUsername(request.getUsername())
                 .orElseThrow(() -> new AppException(ErrorCode.INCORRECT_ACCOUNT_OR_PASSWORD));
 
-        if (!user.getPassword().equals(request.getPassword())) throw new AppException(ErrorCode.INCORRECT_ACCOUNT_OR_PASSWORD);
+        PasswordEncoder passwordEncoder = new BCryptPasswordEncoder(10);
+        boolean authenticated = passwordEncoder.matches(request.getPassword(), user.getPassword());
+
+        if (!authenticated) throw new AppException(ErrorCode.INCORRECT_ACCOUNT_OR_PASSWORD);
+
 
         var token = generateToken(user);
 
@@ -111,6 +116,7 @@ public class AuthenticationService {
                 .expirationTime(new Date(
                         Instant.now().plus(VALID_DURATION, ChronoUnit.SECONDS).toEpochMilli())) // thời gian hết hạn
                 .jwtID(UUID.randomUUID().toString())
+                .claim("scope", buildScope(user))
                 .build();
 
         Payload payload = new Payload(jwtClaimsSet.toJSONObject());
@@ -123,5 +129,15 @@ public class AuthenticationService {
             log.error("Cannot create token ", e);
             throw new RuntimeException(e);
         }
+    }
+    private String buildScope(User user) {
+        StringJoiner stringJoiner = new StringJoiner(" ");
+        Role role = user.getRole();
+        if (!role.equals(null)) {
+            stringJoiner.add("ROLE_" + role.getName());
+            if (!CollectionUtils.isEmpty(role.getPermissions()))
+                role.getPermissions().forEach(permission -> stringJoiner.add(permission.getName()));
+        }
+        return stringJoiner.toString();
     }
 }

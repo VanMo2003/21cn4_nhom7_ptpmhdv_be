@@ -1,5 +1,6 @@
 package com.example.booking_app_be.entity;
 
+import com.example.booking_app_be.constant.PaymentMethod;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
@@ -14,24 +15,17 @@ import java.util.Date;
 @AllArgsConstructor
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class User {
+public class Bill {
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
-    String id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    Long id;
 
-    String username;
-    String password;
-    String fullName;
-    String phone;
-    String gender;
-    LocalDate dateOfBirth;
-    String birthPlace;
-    String address;
+    @OneToOne
+    Booking booking;
 
-    @ManyToOne
-    Role role;
+    PaymentMethod paymentMethod;
+    LocalDate paymentDate;
 
-    boolean active;
     Date onCreate;
     Date onUpdate;
 }

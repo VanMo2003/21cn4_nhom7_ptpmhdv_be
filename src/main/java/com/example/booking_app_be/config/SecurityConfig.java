@@ -28,7 +28,7 @@ public class SecurityConfig {
     private String SIGNER_KEY;
 
     private final String[] PUBLIC_ENDPOINT_POST = {
-        "/users","/auth/login", "/auth/introspect"
+        "/user","/auth/login", "/auth/introspect"
     };
 
     private final CustomJwtDecoder customJwtDecoder;

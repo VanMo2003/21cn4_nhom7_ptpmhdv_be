@@ -1,12 +1,8 @@
 package com.example.booking_app_be.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.ManyToMany;
+import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
-
-import java.util.Set;
 
 @Entity
 @Getter
@@ -15,12 +11,14 @@ import java.util.Set;
 @AllArgsConstructor
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class Role {
+public class Room {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    Long id;
     String name;
-
+    double price;
     String description;
 
-    @ManyToMany
-    Set<Permission> permissions;
+    @ManyToOne
+    Hotel hotel;
 }

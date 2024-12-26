@@ -1,6 +1,7 @@
 package com.example.booking_app_be.service;
 
 import com.example.booking_app_be.dto.request.UserCreationRequest;
+import com.example.booking_app_be.dto.request.UserUpdateRequest;
 import com.example.booking_app_be.dto.response.UserResponse;
 import com.example.booking_app_be.entity.Role;
 import com.example.booking_app_be.entity.User;
@@ -16,8 +17,7 @@ import lombok.experimental.FieldDefaults;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.HashSet;
-import java.util.List;
+
 
 @Service
 @RequiredArgsConstructor
@@ -44,6 +44,9 @@ public class UserService {
         userResponse.setRole(roleMapper.toRoleResponse(role));
 
         return userResponse;
+    }
+
+    public UserResponse updateMyInfo(UserUpdateRequest request) {
     }
 }
 //da fix

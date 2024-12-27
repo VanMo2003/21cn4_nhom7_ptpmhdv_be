@@ -3,8 +3,11 @@ package com.example.booking_app_be.service;
 
 import com.example.booking_app_be.dto.request.AuthenticationRequest;
 import com.example.booking_app_be.dto.request.IntrospectRequest;
+import com.example.booking_app_be.dto.request.LogoutRequest;
+import com.example.booking_app_be.dto.request.RefreshTokenRequest;
 import com.example.booking_app_be.dto.response.AuthenticationResponse;
 import com.example.booking_app_be.dto.response.IntrospectResponse;
+import com.example.booking_app_be.entity.InvalidatedToken;
 import com.example.booking_app_be.entity.Role;
 import com.example.booking_app_be.entity.User;
 import com.example.booking_app_be.exception.AppException;
@@ -79,6 +82,35 @@ public class AuthenticationService {
         if (!authenticated) throw new AppException(ErrorCode.INCORRECT_ACCOUNT_OR_PASSWORD);
 
 
+        var token = generateToken(user);
+
+        return AuthenticationResponse.builder().token(token).authenticated(true).build();
+    }
+    public void logout(LogoutRequest request) throws ParseException, JOSEException {
+        var signToken = verifyToken(request.getToken(), true);
+
+        String jti = signToken.getJWTClaimsSet().getJWTID();
+        Date expiryTime = signToken.getJWTClaimsSet().getExpirationTime();
+
+        InvalidatedToken invalidatedToken =
+                InvalidatedToken.builder().id(jti).expiryTime(expiryTime).build();
+
+        invalidatedRepository.save(invalidatedToken);
+    }
+
+    public AuthenticationResponse refreshToken(RefreshTokenRequest request) throws ParseException, JOSEException {
+        var signJWT = verifyToken(request.getToken(), true);
+
+        var jit = signJWT.getJWTClaimsSet().getJWTID();
+        var expiryTime = signJWT.getJWTClaimsSet().getExpirationTime();
+
+        invalidatedRepository.save(
+                InvalidatedToken.builder().id(jit).expiryTime(expiryTime).build());
+
+        var username = signJWT.getJWTClaimsSet().getSubject();
+
+        var user =
+                userRepository.findByUsername(username).orElseThrow(() -> new AppException(ErrorCode.UN_AUTHENTICATED));
         var token = generateToken(user);
 
         return AuthenticationResponse.builder().token(token).authenticated(true).build();

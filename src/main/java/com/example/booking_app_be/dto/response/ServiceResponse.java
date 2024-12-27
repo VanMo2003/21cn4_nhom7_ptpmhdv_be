@@ -14,5 +14,5 @@ public class ServiceResponse {
     String name;
     double price;
     String description;
-    Hotel hotel;
+    HotelResponse hotel;
 }

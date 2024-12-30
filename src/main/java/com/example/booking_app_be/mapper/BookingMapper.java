@@ -1,5 +1,8 @@
 package com.example.booking_app_be.mapper;
 
+import com.example.booking_app_be.dto.request.BookRequest;
+import com.example.booking_app_be.dto.request.BookingRequest;
+import com.example.booking_app_be.dto.response.BookingResponse;
 import com.example.booking_app_be.entity.Booking;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;

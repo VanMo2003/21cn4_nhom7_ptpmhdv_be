@@ -1,6 +1,5 @@
 package com.example.booking_app_be.service;
 
-
 import com.example.booking_app_be.dto.request.BookRequest;
 import com.example.booking_app_be.dto.request.BookedRoomRequest;
 import com.example.booking_app_be.dto.request.BookingRequest;
@@ -24,7 +23,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 
 import java.util.List;
-
 
 @org.springframework.stereotype.Service
 @RequiredArgsConstructor
@@ -78,12 +76,12 @@ public class BookedRoomService {
 
             BookingRequest bookingRequest = bookingMapper.toBookingRequest(bookRequest);
             bookingService.createBookingService(bookingRequest, bookedRoom);
-
             BookedRoomResponse bookedRoomResponse = bookedRoomMapper.toBookedRoomResponse(bookedRoom);
             bookedRoomResponse.setRooms(rooms.stream().map(room -> roomMapper.toRoomResponse(room)).toList());
             bookedRoomResponse.setServices(services.stream().map(service -> serviceMapper.toServiceResponse(service)).toList());
 
             return bookedRoomResponse;
+            return bookedRoomMapper.toBookedRoomResponse(bookedRoom);
         }
 
         throw new AppException(ErrorCode.BOOKED_ROOM_EXISTED);
@@ -91,6 +89,7 @@ public class BookedRoomService {
 
     private boolean checkExistBookedRoom(BookedRoomRequest request, Hotel hotel) {
         List<BookedRoom> bookedRooms = bookedRoomRepository.getAllBookedRoomIntersectArrivalDateAndDepartureDate(request.getArrivalDate(), request.getDepartureDate(), hotel.getId());
+        List<BookedRoom> bookedRooms = bookedRoomRepository.findByArrivalDateOrDepartureDateAndHotel(request.getArrivalDate(), request.getDepartureDate(), hotel);
 
         for (BookedRoom bookedRoom: bookedRooms) {
             for (Room room: bookedRoom.getRooms()) {

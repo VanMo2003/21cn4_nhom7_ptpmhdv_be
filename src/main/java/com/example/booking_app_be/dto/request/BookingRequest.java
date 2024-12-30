@@ -1,7 +1,10 @@
-package com.example.booking_app_be.dto.request;
+package com.example.booking_app.dto.request;
 
-import com.example.booking_app_be.constant.PaymentMethod;
-import com.example.booking_app_be.constant.StatusOrder;
+import com.example.booking_app.constant.PaymentMethod;
+import com.example.booking_app.constant.StatusOrder;
+import com.example.booking_app.entity.BookedRoom;
+import com.example.booking_app.entity.User;
+import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
@@ -19,8 +22,8 @@ public class BookingRequest {
     StatusOrder statusOrder = StatusOrder.PENDING;
     PaymentMethod paymentMethod;
 
-
     Long bookedRoomId;
+    double price = 0.0;
 
     Date onCreate = new Date();
     Date onUpdate = new Date();

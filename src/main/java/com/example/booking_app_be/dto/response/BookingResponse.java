@@ -1,16 +1,17 @@
-package com.example.booking_app_be.dto.response;
+package com.example.booking_app.dto.response;
 
-
-import com.example.booking_app_be.constant.PaymentMethod;
-import com.example.booking_app_be.constant.StatusOrder;
-import com.example.booking_app_be.entity.BookedRoom;
-import com.example.booking_app_be.entity.User;
+import com.example.booking_app.constant.PaymentMethod;
+import com.example.booking_app.constant.StatusOrder;
+import com.example.booking_app.entity.*;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
 import java.time.LocalDate;
 import java.util.Date;
-
+import java.util.List;
+@JsonInclude(JsonInclude.Include.NON_NULL)
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -24,7 +25,7 @@ public class BookingResponse {
     PaymentMethod paymentMethod;
 
     User user;
-    BookedRoom bookedRoom;
+    BookedRoomResponse bookedRoom;
 
     Date onCreate;
     Date onUpdate;

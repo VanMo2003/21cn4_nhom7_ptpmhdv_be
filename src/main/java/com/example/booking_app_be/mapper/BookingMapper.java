@@ -1,9 +1,12 @@
-package com.example.booking_app_be.mapper;
+package com.example.booking_app.mapper;
 
-import com.example.booking_app_be.dto.request.BookRequest;
-import com.example.booking_app_be.dto.request.BookingRequest;
-import com.example.booking_app_be.dto.response.BookingResponse;
-import com.example.booking_app_be.entity.Booking;
+import com.example.booking_app.dto.request.BookRequest;
+import com.example.booking_app.dto.request.BookedRoomRequest;
+import com.example.booking_app.dto.request.BookingRequest;
+import com.example.booking_app.dto.response.BookedRoomResponse;
+import com.example.booking_app.dto.response.BookingResponse;
+import com.example.booking_app.entity.BookedRoom;
+import com.example.booking_app.entity.Booking;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
@@ -17,6 +20,7 @@ public interface BookingMapper {
 
     BookingRequest toBookingRequest(BookRequest request);
 
+    @Mapping(target = "bookedRoom", ignore = true)
     BookingResponse toBookingResponse(Booking booking);
 
     @Mapping(target = "user", ignore = true)

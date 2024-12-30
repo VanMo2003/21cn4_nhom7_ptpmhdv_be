@@ -10,5 +10,9 @@ import java.util.Optional;
 @Repository
 
 public interface HotelRepository extends JpaRepository<Hotel, Long>{
+<<<<<<< HEAD
+=======
+    boolean existsByUserId(String userId);
+>>>>>>> main
     Optional<Hotel> findByUserId(String userId);
 }

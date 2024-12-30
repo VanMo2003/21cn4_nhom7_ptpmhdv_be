@@ -18,12 +18,9 @@ public class HotelResponse {
     String nameHotel;
     String address;
     String description;
-    double price;
-    int numberOfRoom;
-
+    double rating;
     @JsonInclude(JsonInclude.Include.NON_NULL)
     UserResponse user;
-
     List<RoomResponse> rooms;
 
     List<ServiceResponse> services;

@@ -1,10 +1,13 @@
 package com.example.booking_app_be.service;
 
+import com.example.booking_app_be.dto.request.StatisticalRequest;
 import com.example.booking_app_be.dto.response.StatisticalResponse;
 import com.example.booking_app_be.entity.Booking;
 import com.example.booking_app_be.entity.Hotel;
 import com.example.booking_app_be.entity.Statistical;
 import com.example.booking_app_be.entity.User;
+import com.example.booking_app_be.exception.AppException;
+import com.example.booking_app_be.exception.ErrorCode;
 import com.example.booking_app_be.mapper.HotelMapper;
 import com.example.booking_app_be.mapper.StatisticalMapper;
 import com.example.booking_app_be.repository.BookingRepository;

@@ -10,4 +10,6 @@ import java.util.Optional;
 @Repository
 
 public interface HotelRepository extends JpaRepository<Hotel, Long>{
+    boolean existsByUserId(String userId);
+    Optional<Hotel> findByUserId(String userId);
 }

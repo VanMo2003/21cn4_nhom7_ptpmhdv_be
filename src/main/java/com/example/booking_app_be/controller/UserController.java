@@ -1,6 +1,7 @@
 package com.example.booking_app_be.controller;
 
 import com.example.booking_app_be.dto.request.UserCreationRequest;
+import com.example.booking_app_be.dto.request.UserUpdateRequest;
 import com.example.booking_app_be.dto.response.ApiResponse;
 import com.example.booking_app_be.dto.response.UserResponse;
 import com.example.booking_app_be.service.UserService;
@@ -10,7 +11,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 
 @RestController
 @RequestMapping("/user")
@@ -25,4 +25,9 @@ public class UserController {
         response.setData(userService.createUser(request));
         return response;
     }
+    @PutMapping("/updateMyInfo")
+    ApiResponse<UserResponse> updateMyInfo(@RequestBody UserUpdateRequest request) {
+        return ApiResponse.<UserResponse>builder().data(userService.updateMyInfo(request)).build();
+    }
 }
+

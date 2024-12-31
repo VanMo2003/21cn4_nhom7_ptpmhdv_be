@@ -57,7 +57,6 @@ public class HotelService {
 
         return hotelResponse;
     }
-
     public HotelResponse getHotelById(Long id){
         Hotel hotel = hotelRepository.findById(id).orElseThrow(() -> new AppException(ErrorCode.HOTEL_NOT_EXISTED));
 
@@ -70,7 +69,6 @@ public class HotelService {
 
         return  hotelResponse;
     }
-
     public HotelResponse updateHotel(Long id, HotelRequest request) {
         Hotel hotel = hotelRepository.findById(id).orElseThrow(() -> new AppException(ErrorCode.HOTEL_NOT_EXISTED));
 
@@ -94,5 +92,29 @@ public class HotelService {
     @PreAuthorize("hasRole('ADMIN')")
     public void deleteHotel(Long id) {
         hotelRepository.deleteById(id);
+    }
+    public List<HotelResponse> searchHotelByName(String name) {
+        Specification<Hotel> spec = UserSpecification.hasSimilarName(name);
+        List<Hotel> hotels = hotelRepository.findAll(spec);
+        List<HotelResponse> hotelResponses =
+                hotels.stream().map(hotel -> hotelMapper.toHotelResponse(hotel)).toList();
+
+        return hotelResponses;
+    }
+
+    public List<HotelResponse> searchHotelByAddress(String address) {
+        Specification<Hotel> spec = UserSpecification.hasSimilarAddress(address);
+        List<Hotel> hotels = hotelRepository.findAll(spec);
+        List<HotelResponse> hotelResponses =
+                hotels.stream().map(hotel -> hotelMapper.toHotelResponse(hotel)).toList();
+
+        return hotelResponses;
+    }
+
+    public List<HotelResponse> searchUsersByNameAndAddress(String name, String address) {
+        Specification<Hotel> spec = UserSpecification.hasSimilarNameAndAddress(name, address);
+        return hotelRepository.findAll(spec).stream()
+                .map(hotel -> hotelMapper.toHotelResponse(hotel))
+                .toList();
     }
 }
